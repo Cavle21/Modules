@@ -22,6 +22,12 @@ class PowershellJob {
 
     }
 
+    PowershellJob([ArrayList]$scriptblocks, [string]$computerName, [ArrayList]$argumentList){
+        $this.scriptblock = $scriptblocks
+        $this.computerName = $computerName
+        $this.argumentList = $argumentList
+    }
+
     [void]start(){
 
         $arguments = @{
@@ -31,7 +37,7 @@ class PowershellJob {
             AsJob = $true
         }
 
-        $this.job =  Invoke-Command @arguments
+        $this.job =  Invoke-Command -ScriptBlock {Start-Job $this.job} -ComputerName $this.computerName
 
     }
 
@@ -41,7 +47,7 @@ class PowershellJob {
 
     [object]pollstatus(){
 
-        return Get-Job $this.job.status
+        return Get-Job $this.job
 
 
     }
