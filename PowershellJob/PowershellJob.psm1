@@ -1,37 +1,38 @@
 using namespace System.Collections
+using namespace System.Management.Automation
+using module ..\ComputerObject.psm1 
 
 class PowershellJob {
 
     [scriptblock]$currentscriptblock
-    [string]$computerName
-
-    [object]$Runningjob
+    [Computer]$computer
+    [Job]$Runningjob
     [object]$jobResult
     [boolean]$asyncJobs
     [Queue]$scriptBlockQueue
 
-    PowershellJob([scriptblock]$scriptblock,[string]$computerName,[boolean]$asyncJobs){
+    PowershellJob([scriptblock]$scriptblock,[Computer]$computer,[boolean]$asyncJobs){
         $this.scriptBlockQueue.Enqueue($scriptblock)
-        $this.computerName = $computerName
+        $this.computer = $computer
         $this.asyncJobs = $asyncJobs
 
     }
 
-    PowershellJob([scriptblock]$scriptblock,[string]$computerName, [ArrayList]$argumentList,[boolean]$asyncJobs){
+    PowershellJob([scriptblock]$scriptblock,[computer]$computer, [ArrayList]$argumentList,[boolean]$asyncJobs){
 
         $this.scriptBlockQueue.Enqueue($scriptblock)
         $this.argumentList = $argumentList
-        $this.computerName = $computerName
+        $this.computer = $computer
         $this.asyncJobs = $asyncJobs
 
     }
 
-    PowershellJob([ArrayList]$scriptblocks, [string]$computerName, [ArrayList]$argumentList,[boolean]$asyncJobs){
+    PowershellJob([ArrayList]$scriptblocks, [computer]$computer, [ArrayList]$argumentList,[boolean]$asyncJobs){
         ForEach ($scriptBlock in $scriptBlocks){
             $this.scriptBlockQueue.Enqueue($scriptBlock)
         }
 
-        $this.computerName = $computerName
+        $this.computer = $computer
         $this.argumentList = $argumentList
         $this.asyncJobs = $asyncJobs
     }
@@ -39,12 +40,12 @@ class PowershellJob {
     [void]start(){
 
         $arguments = @{
-            computerName = $this.computer
+            computer = $this.computer.hostName
             argumentList = $this.argumentList
             AsJob = $this.asyncJobs
         }
 
-        $this.job =  Invoke-Command -ScriptBlock {Start-Job $using:scriptBlock} @arguments
+        
     }
 
     [void]stop(){
@@ -65,4 +66,6 @@ class PowershellJob {
         return Get-Job $this.job.status
 
     }
+
+    [void]ContinueWith (){}
 }

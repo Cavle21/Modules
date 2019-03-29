@@ -5,6 +5,8 @@ class PowershellJobManager {
 
     [ArrayList]$RegisteredJobs
 
+    PowershellJobManager(){}
+
     [void]StartAll(){
         
     }

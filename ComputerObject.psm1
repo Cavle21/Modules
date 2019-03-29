@@ -1,4 +1,5 @@
 using namespace System.Collections
+using namespace System.Management.Automation
 
 class Computer {
     [String]$IPAddress
