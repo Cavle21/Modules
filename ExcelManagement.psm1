@@ -1,3 +1,6 @@
+using namespace System.Collections
+
+
 class ExcelDocument {
 
     #excel is the manager
@@ -11,13 +14,15 @@ class ExcelDocument {
     [string]$currentSheet
     [boolean]$visibility
     [boolean]$displayAlerts
-    [System.Collections.Hashtable]$hashHeaders
+    [Hashtable]$hashHeaders
 
     #open existing document
     ExcelDocument ([string]$path, $visibility, $displayAlerts) {
         $this.excel = New-Object -ComObject Excel.Application
         try {
+
             $this.workBook = $this.excel.Workbooks.Open($path)
+
         }catch{
             Write-host "Unable to open excelsheet"
             Write-host $error[0].exception.Message
@@ -31,8 +36,9 @@ class ExcelDocument {
         
         $this.path = $path
     }
+
     #create new document
-    ExcelDocument ([string]$nameOfDocument, $visibility, $displayAlerts){
+    ExcelDocument ($visibility, $displayAlerts){
         $this.excel = New-Object -ComObject excel.application
         $this.excel.application.Visible = $visibility
         $this.excel.displayalerts = $displayAlerts
@@ -57,7 +63,7 @@ class ExcelDocument {
         [System.Runtime.Interopservices.Marshal]::ReleaseComObject($this.workSheet)
     }
 
-    [System.Collections.Hashtable]GetColumnHeaders ([uint32]$startingCol, [uint32]$row){
+    [Hashtable]GetColumnHeaders ([uint32]$startingCol, [uint32]$row){
 
         $col = $startingCol
 
@@ -77,7 +83,7 @@ class ExcelDocument {
 
 
 
-    [System.Collections.Hashtable]GetValuesInRow([uint32]$startingCol, [uint32]$row){
+    [Hashtable]GetValuesInRow([uint32]$startingCol, [uint32]$row){
 
         $col = $startingCol
 
@@ -95,7 +101,7 @@ class ExcelDocument {
     }
 
     #iterates through search criteria to find values of one row. Needs work, too hardcoded.
-    [PSCustomObject]FindCriteria ([uint32]$startingCol, [uint32]$row, [System.Collections.ArrayList]$arrSearchCriteria){
+    [PSCustomObject]FindCriteria ([uint32]$startingCol, [uint32]$row, [ArrayList]$arrSearchCriteria){
         $result = [PSCustomObject]@{}
         $numberOfResults = 1
         $foundArr = new-object System.Collections.ArrayList
@@ -165,8 +171,8 @@ class ExcelDocument {
 
     DeleteCellValue(){}
 
-    [system.Collections.ArrayList]SelectDataRange ($initialRow, $row, $letterToStart, $letterToStop) {
-        [System.Collections.ArrayList]$dataRange = $this.sheet.Range(("$letterToStart{0}" -f $initialRow, ("$LetterToStop{0}" -f $row)))
+    [ArrayList]SelectDataRange ($initialRow, $row, $letterToStart, $letterToStop) {
+        [ArrayList]$dataRange = $this.sheet.Range(("$letterToStart{0}" -f $initialRow, ("$LetterToStop{0}" -f $row)))
 
         return $dataRange
     }
