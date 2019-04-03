@@ -183,5 +183,11 @@ class ExcelDocument {
         $this.sheet.cells.item(1,$column).entireColumn.Delete()
     }
 
+    [Void]sortWorkSheet(){
+        $currenSheet = $this.excel.ActiveSheet
+
+        
+    }
+
     
 }
