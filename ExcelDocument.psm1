@@ -5,8 +5,8 @@ class ExcelDocument {
     #sheet is a page inside workbook
     
     $excel
-    $workBook
-    $workSheet
+    $book
+    $sheet
     [string]$path
     [string]$currentSheet
     [boolean]$visibility
@@ -14,7 +14,7 @@ class ExcelDocument {
     [System.Collections.Hashtable]$hashHeaders
 
     #open existing document
-    ExcelDocument ([string]$path, $visibility, $displayAlerts) {
+    ExcelDocument([string]$path, [boolean]$visibility, [boolean]$displayAlerts) {
         $this.excel = New-Object -ComObject Excel.Application
         try {
             $this.workBook = $this.excel.Workbooks.Open($path)
@@ -31,8 +31,8 @@ class ExcelDocument {
         
         $this.path = $path
     }
-    #create new document
-    ExcelDocument ([string]$nameOfDocument, $visibility, $displayAlerts){
+
+    ExcelDocument([boolean]$visibility, [boolean]$displayAlerts,[string]$documentName){
         $this.excel = New-Object -ComObject excel.application
         $this.excel.application.Visible = $visibility
         $this.excel.displayalerts = $displayAlerts
@@ -42,7 +42,7 @@ class ExcelDocument {
         $this.book = $this.excel.Workbooks.Add()
 
         $this.sheet = $this.book.Worksheets.Item(1)
-        $this.Sheet.Name = $nameOfDocument
+        $this.Sheet.Name = $documentName
 
         $this.sheet.Activate() 
     }
@@ -152,8 +152,7 @@ class ExcelDocument {
     SelectSheet(){}
 
     SetValuesInCell ([uint32]$col, [uint32]$row, [string]$value){
-        $this.sheet.cells.Item($row,$col) = $value
-        $this.sheet.cells.Item($row,$col).entireRow.Delete()
+        $this.sheet.cells.Item($row,$col).text = $value
     }
 
     [string]GetValuesInCell([uint32]$row, [uint32]$col){

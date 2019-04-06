@@ -17,7 +17,7 @@ class ExcelManager {
         $excelDocument2.ActiveSheet.Paste($destinationPaste)
     }
 
-    static CopyRowBetweenDocuments([excelDocument]$excelDocument1, [excelDocument]$excelDocument2,[int]$sourceRow, [int]$destinationRow){
+    static CopyRowBetweenExcelDocuments([excelDocument]$excelDocument1, [excelDocument]$excelDocument2,[int]$sourceRow, [int]$destinationRow){
 
         $rowToCopy = $excelDocument1.ActiveSheet.cells.item($sourceRow,1).entireRow
 
@@ -29,7 +29,7 @@ class ExcelManager {
 
     }
 
-    static CopyColumnBetweenDocuments([excelDocument]$excelDocument1, [excelDocument]$excelDocument2,[int]$sourceRow, [int]$destinationRow){
+    static CopyColumnBetweenExcelDocuments([excelDocument]$excelDocument1, [excelDocument]$excelDocument2,[int]$sourceRow, [int]$destinationRow){
 
         $rowToCopy = $excelDocument1.ActiveSheet.cells.item($sourceRow,1).entireRow
 
@@ -40,4 +40,6 @@ class ExcelManager {
         $excelDocument2.ActiveSheet.Paste($destinationToPaste)
 
     }
+
+    CopyFromXMLFile(){}
 }
