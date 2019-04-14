@@ -47,6 +47,22 @@ class ExcelDocument {
         $this.sheet.Activate() 
     }
 
+    ExcelDocument(){}
+
+    NewExcelDocument(){
+        $this.excel = New-Object -ComObject excel.application
+    }
+
+    [bool]NewExcelSheet(){
+        if ($this.excel -ne $null){
+            $this.book = $this.excel.Workbooks.Add()
+            $this.sheet = $this.book.Worksheets.Item(1)
+            return $true
+        }else{
+            return $false
+        }
+    }
+
     [void]SaveDocument (){}
 
     [void]CloseDocument (){
@@ -147,12 +163,16 @@ class ExcelDocument {
         return $result
     }
 
-    NewSheet(){}
-
     SelectSheet(){}
 
-    SetValuesInCell ([uint32]$col, [uint32]$row, [string]$value){
+    [bool]SetValuesInCell ([uint32]$col, [uint32]$row, [string]$value){
         $this.sheet.cells.Item($row,$col).text = $value
+
+        if ($this.sheet.cells.Item($row,$col).text -eq $value){
+            return $True
+        }else{
+            return $false
+        }
     }
 
     [string]GetValuesInCell([uint32]$row, [uint32]$col){
@@ -186,7 +206,5 @@ class ExcelDocument {
         $currenSheet = $this.excel.ActiveSheet
 
         
-    }
-
-    
+    }    
 }
