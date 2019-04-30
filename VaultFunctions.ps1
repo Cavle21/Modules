@@ -17,7 +17,7 @@ Function Get-FromVault{
             [string]$hostServer = "vault.sonalysts.com"
 
     )
-<#
+    <#
 .DESCRIPTION
 Allows users to access two functions of vault. Get the working folder (GetWorking) or get latest from a 
 vault directory (GetLatest)
