@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<VirtualMachine>
+    <Name>$(VMName)</name>
+    <NewVHDPath>$(VHDStoragePath)</NewVHDPath>
+    <NewVHDSize>$(VHDStorageSize)</NewVHDSize>
+    <Generation>$(VMGeneration)</Generation>
+    <SwitchName>$(VMSwitch)</SwitchName>
+    <Path>$(VMConfigLocation)</Path>
+    <BootDevice>$(VMBootDevice)</BootDevice>
+    <DynamicMemory>$(VMDynamicMemory)</DynamicMemory>
+    <MemoryStartupBytes>$(VMStartupRAM)</MemoryStartupBytes>
+    <MemoryMaximumBytes>$(VMMaximumRAM)</MemoryMaximumBytes>
+    <MemoryMinimumBytes>$(VMMinimumRAM)</MemoryMinimumBytes>
+    <ProcessorCount>$(VMProcessorCount)</ProcessorCount>
+    <CheckPointType>$(VMCheckPointType)</CheckPointType>
+    <Notes>$(VMNotes)</Notes>
+</VirtualMachine>
+

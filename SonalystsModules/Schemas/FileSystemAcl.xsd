@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FileSystemAcl"
+    targetNamespace="AclTypes.xsd"
+    elementFormDefault="qualified"
+    xmlns="AclTypes.xsd"
+    xmlns:mstns="AclTypes.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <xs:include schemaLocation="CommonAclTypes.xsd" />
+
+    <xs:element name="FileSystemAclFileObject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AccessRuleProtection" type="AccessRuleProtection" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="AuditRuleProtection" type="AuditRuleProtection" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="AccessRules" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AccessRule" type="FileSystemAccessRuleInternal" minOccurs="1" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="AuditRules" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AuditRule" type="FileSystemAuditRuleInternal" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="FileSystemAccessRuleInternal">
+        <xs:all minOccurs="1" maxOccurs="1">
+            <xs:element name="FileSystemRights" type="FileSystemRights"/>
+            <xs:element name="AccessControlType" type="AccessControlType"/>
+            <xs:element name="Identity" type="xs:string"/>
+            <xs:element name="InheritanceFlags" type="InheritanceFlags"/>
+            <xs:element name="PropagationFlags" type="PropagationFlags"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="FileSystemAuditRuleInternal">
+        <xs:all minOccurs="1" maxOccurs="1">
+            <xs:element name="FileSystemRights" type="FileSystemRights"/>
+            <xs:element name="AuditFlags" type="AuditFlags"/>
+            <xs:element name="Identity" type="xs:string"/>
+            <xs:element name="InheritanceFlags" type="InheritanceFlags"/>
+            <xs:element name="PropagationFlags" type="PropagationFlags"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:simpleType name="InheritanceFlags">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(None|ContainerInherit|ObjectInherit)$)|(^((None|ContainerInherit|InheritOnly)+(,\s{1}(None|ContainerInherit|ObjectInherit)+)*$))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FileSystemRights">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(ListDirectory|ReadData|WriteData|CreateFiles|CreateDirectories|AppendData|ReadExtendedAttributes|WriteExtendedAttributes|Traverse|ExecuteFile|DeleteSubdirectoriesAndFiles|ReadAttributes|WriteAttributes|Write|Delete|ReadPermissions|Read|ReadAndExecute|Modify|ChangePermissions|TakeOwnership|Synchronize|FullControl)$)|(^((ListDirectory|ReadData|WriteData|CreateFiles|CreateDirectories|AppendData|ReadExtendedAttributes|WriteExtendedAttributes|Traverse|ExecuteFile|DeleteSubdirectoriesAndFiles|ReadAttributes|WriteAttributes|Write|Delete|ReadPermissions|Read|ReadAndExecute|Modify|ChangePermissions|TakeOwnership|Synchronize|FullControl)+(,\s{1}(ListDirectory|ReadData|WriteData|CreateFiles|CreateDirectories|AppendData|ReadExtendedAttributes|WriteExtendedAttributes|Traverse|ExecuteFile|DeleteSubdirectoriesAndFiles|ReadAttributes|WriteAttributes|Write|Delete|ReadPermissions|Read|ReadAndExecute|Modify|ChangePermissions|TakeOwnership|Synchronize|FullControl)+)*$))"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<Task version="1.3" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <!---
+  
+.SYNOPSIS
+    Schedule Task template.
+.DESCRIPTION
+    Scheduled task template that has settings specifically for the scheduled event
+    that is required for the PVH.
+    Principals
+    -no variables
+    Settings
+    -restart on failure and retries
+    Triggers
+    3 triggers
+    2 time based
+    1 logon based.
+.EXAMPLE
+    PS C:\> <example usage>
+    Explanation of what the example does
+.INPUTS
+    Inputs (if any)
+.OUTPUTS
+    Output (if any)
+.NOTES
+    General notes
+ 
+  
+  -->
+  <RegistrationInfo>
+    <Version>15.0.0</Version>
+    <Date>2012-01-01T00:00:00</Date>
+    <Author>$(Author)</Author>
+    <Description>$(Description)</Description>
+    <URI>$(TaskLocationInScheduler)</URI>
+  </RegistrationInfo>
+  <Principals>
+    <Principal id="Author">
+      <UserId>S-1-5-18</UserId>
+      <LogonType>S4U</LogonType>
+    </Principal>
+  </Principals>
+  <Settings>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <ExecutionTimeLimit>$(ExecutionTimeLimit)</ExecutionTimeLimit>
+    <MultipleInstancesPolicy>$(MultipleInstancesPolicy)</MultipleInstancesPolicy>
+    <RestartOnFailure>
+      <Count>$(RestartAttempts)</Count>
+      <Interval>$(RestartAttemptInterval)</Interval>
+    </RestartOnFailure>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>true</RunOnlyIfNetworkAvailable>
+    <IdleSettings>
+      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+    <UseUnifiedSchedulingEngine>true</UseUnifiedSchedulingEngine>
+    <AllowStartOnDemand>$(AllowRunOnDemand)</AllowStartOnDemand>
+    <AllowHardTerminate>$(AllowHardTerminate)</AllowHardTerminate>
+    <Enabled>true</Enabled>
+  </Settings>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>$(StartBoundary1)</StartBoundary>
+      <ExecutionTimeLimit>$(ExecutionTimeLimit)</ExecutionTimeLimit>
+      <ScheduleByDay>
+        <DaysInterval>$(DaysInterval)</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+    <CalendarTrigger>
+      <StartBoundary>$(StartBoundary2)</StartBoundary>
+      <ExecutionTimeLimit>$(ExecutionTimeLimit)</ExecutionTimeLimit>
+      <ScheduleByDay>
+        <DaysInterval>$(DaysInterval)</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+    <BootTrigger>
+      <StartBoundary>$(StartBoundary)</StartBoundary>
+      <ExecutionTimeLimit>$(ExecutionTimeLimit)</ExecutionTimeLimit>
+      <Delay>$(DelayStart)</Delay>
+    </BootTrigger>
+  </Triggers>
+  <Actions Context="Author">
+    <Exec>
+      <Command>$(Command)</Command>
+      <Arguments>$(CommandArguments)</Arguments>
+    </Exec>
+  </Actions>
+</Task>

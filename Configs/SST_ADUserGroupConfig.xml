@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!--
+	This config file is compatible with version 2.1.0.0 of the ADUserGroupConfig.ps1 script
+	
+	- When the attribute "enabled" is set to true, the element will be processed. 
+	- When the attribute "enabled" is set to false, the element is disabled and will NOT be processed.
+	- The systemInfo "name" and "abbreviation" attributes can be used as variables: ${name} SST
+	- Using a template for a user account is optional. The attributes "memberOf" and "removeMemberOf" can be specified directly in in the account element.
+	  When the template is specified, it overrides the "memberOf" and "removeMemberOf" attributes. All attributes must still exist in the element, even if they do not have a value.
+	- The "template" attribute is case sensitive, it must be the exact name of the element to be used under userTempaltes.
+	- All usersAccount usernames must be 20 or fewer characters after the variables have been expanded and any enumeration applied.
+	- All managedServiceAccounts usernames must be 15 or fewer characters after the variables have been expanded.
+	- The msaPrincipal for managedServiceAccounts specifies which group can use that MSA.
+	- The "quantity" attribute can used for userAccounts when more then one identical account needs to be created. When specified, the script will create the quantity of accounts specified
+      and automatically append an enumerator to the end of the username that is specified. For example if the specified username is "Limited", and the quantity is "3" the following accounts
+	  will be made: Limited-01, Limited-02, Limited-03
+-->
+<configuration>
+  <systemInfo>
+    <name>Standard Space Trainer Lab</name>
+    <abbreviation>SST</abbreviation>
+    <description>Config file for an SST lab with 1 physical DC, 1 virtual DC, 2 Hyper-V VM hosts, and 1 virtual SST HDR</description>
+    <comment>
+    </comment>
+    <uid></uid>
+    <MasterUIDPassphrase></MasterUIDPassphrase>
+    <MasterUIDSalt></MasterUIDSalt>
+    <MasterUIDIV></MasterUIDIV>
+  </systemInfo>
+  <!-- User Group Membership Templates -->
+  <userTemplates>
+    <default>
+      <name>Default</name>
+      <memberOf>Domain Users</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </default>
+    <limitedUser>
+      <name>Limited Users</name>
+      <memberOf>Domain Users</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </limitedUser>
+    <workstationAdmin>
+      <name>Workstation Admins</name>
+      <memberOf>SSTWorkstationAdmins,SSTSystemUpdaters</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </workstationAdmin>
+    <serverAdmin>
+      <name>Server Admins</name>
+      <memberOf>SSTMemberServerAdmins,SSTSQLDBAdmins</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </serverAdmin>
+    <domainAdmin>
+      <name>Domain Admins</name>
+      <memberOf>Administrators,Domain Admins,Enterprise Admins,Group Policy Creator Owners,Schema Admins,SSTSQLDBAdmins,Protected Users</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </domainAdmin>
+    <serviceAccount>
+      <name>Service Accounts</name>
+      <memberOf>SSTServiceUserAccounts</memberOf>
+      <removeMemberOf></removeMemberOf>
+    </serviceAccount>
+  </userTemplates>
+  <!-- Users Accounts -->
+  <userAccounts>
+    <account username="DomainJoiner" password="Willyonamona@@23456@#$%^" description="Temp AD user to join machines to the domain" template="domainAdmin" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTDomainAdmin" password="SST(8871)_Domain" description="SST primary domain administrator" template="domainAdmin" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTAdministrator" password="Admin2(8871)_SST" description="SST secondary domain administrator" template="domainAdmin" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTSRVAdmin" password="Serv37(8871)_SST" description="SST primary administrator on member servers only" template="serverAdmin" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTWKSAdmin" password="Work27(8871)_SST" description="SST primary administrator on workstations only" template="workstationAdmin" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTLimited" password="SonalystsLIM##8871" description="SST limited user account" template="limitedUser" memberOf="" removeMemberOf="" quantity="59" enabled="true" />
+    <!-- Symantec Backup Exec Accounts - Disabled by default, enable if you are using SBE -->
+	  <account username="SYMBackupAdmin" password="y3HqbjPX!aEgUt#b7KwY" description="SST Symantec Administrator used by Backup Exec service" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+  </userAccounts>
+  <!-- Managed Service Accounts -->
+  <managedServiceAccounts>
+    <!-- MS SQL Service Accounts -->
+    <account username="SSTSQLAgent" description="SST SQL managed service account for the SQL Agent service" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTSQLDBEng" description="SST SQL managed service account for the SQL Database Engine service" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTSQLVSSw" description="SST SQL managed service account for the SQL VSS Writer service" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTSQLFTL" description="SST SQL managed service account for the SQL fulltext daemon" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SSTSQLBrowse" description="SST SQL managed service account for the SQL Browser service" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <!-- MS SQL Service Accounts - Disabled by default, enable if needed -->
+    <account username="SSTSQLCEIP" description="SSTSQL managed service account for the SQL telemetry" msaPrincipal="SSTVH02MSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="false" />
+    <account username="SSTSQLIntegr" description="SST SQL managed service account for the SQL Integration service" msaPrincipal="SSTAppServerMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="false" />
+    <!-- Symantec Backup Exec Accounts - Disabled by default, enable if you are using SBE -->
+    <account username="SYMSQLAgent" description="SST Symantec SQL managed service account for the SQL Agent service" msaPrincipal="SSTVH02MSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SYMSQLDBEng" description="SST Symantec SQL managed service account for the SQL Database Engine service" msaPrincipal="SSTVH02MSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SYMSQLVSSw" description="SST Symantec SQL managed service account for the SQL VSS Writer service" msaPrincipal="SSTVH02MSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+    <account username="SYMSQLBrowse" description="SST Symantec SQL managed service account for the SQL Browser service" msaPrincipal="SSTVH02MSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+   <!-- System Specific Service Accounts -->
+    <account username="SSTHDRService" description="SST managed service account for the SST HDR service" msaPrincipal="SSTHDRMSA" template="serviceAccount" memberOf="" removeMemberOf="" enabled="true" />
+  </managedServiceAccounts>
+  <!-- Groups -->
+  <groups>
+    <group name="Auditors" description="Members of this group have access to Managed Auditing and Security Logs" enabled="true" />
+    <group name="SSTWorkstationAdmins" description="SST group for making domain user accounts members of the Administrators group on local client workstations only" enabled="true" />
+    <group name="SSTMemberServerAdmins" description="SST group for making domain user accounts members of the Administrators group on local member servers only" enabled="true" />
+    <group name="SSTServiceUserAccounts" description="SST group for enabling an account to run as a service" enabled="true" />
+    <group name="SSTHDRMSA" description="SST group who is allowed to retrieve managed passwords for assigned MSAs" enabled="true" />
+    <group name="SSTVH02MSA" description="SST group who is allowed to retrieve managed passwords for assigned MSAs" enabled="true" />
+    <group name="SSTSQLDBAdmins" description="SST group for making user accounts SQL Database administrators" enabled="true" />
+    <group name="SSTSQLDBUsers" description="SST group for making user accounts have full access to the SST DBs in SQL Server" enabled="true" />
+    <group name="SSTSystemUpdaters" description="SST group for granting the permissions necessary to manually update Windows" enabled="true" />
+    <!-- VMware ESXi Groups are disabled by default, enable if you are using ESXi -->
+    <group name="ESXi Admins" description="VMware group for delegating root privileges over the ESXi host" enabled="false" />
+    <group name="ESX Admins" description="VMware default group. Intentionally left with no members" enabled="false" />
+    <!-- System Specific Groups -->
+  </groups>
+</configuration>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ActiveDirectoryAcl"
+    targetNamespace="AclTypes.xsd"
+    elementFormDefault="qualified"
+    xmlns="AclTypes.xsd"
+    xmlns:mstns="AclTypes.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <xs:include schemaLocation="CommonAclTypes.xsd" />
+
+    <xs:element name="ActiveDirectoryAclFileObject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AccessRuleProtection" type="AccessRuleProtection" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="AuditRuleProtection" type="AuditRuleProtection" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="AccessRules" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AccessRule" type="ActiveDirectoryAccessRuleInternal" minOccurs="1" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="AuditRules" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AuditRule" type="ActiveDirectoryAuditRuleInternal" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ActiveDirectoryAccessRuleInternal">
+        <xs:all minOccurs="1" maxOccurs="1">
+            <xs:element name="ActiveDirectoryRights" type="ActiveDirectoryRights" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="AccessControlType" type="AccessControlType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ObjectClassNameToApplyTo" type="xs:string" minOccurs="1" maxOccurs="1" default="''"/>
+            <xs:element name="ObjectClassNameToAllowInherit" type="xs:string" minOccurs="1" maxOccurs="1" default="''"/>
+            <xs:element name="Identity" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="InheritanceType" type="InheritanceType" minOccurs="1" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="ActiveDirectoryAuditRuleInternal">
+        <xs:all minOccurs="1" maxOccurs="1">
+            <xs:element name="ActiveDirectoryRights" type="ActiveDirectoryRights" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="AuditFlags" type="AuditFlags" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ObjectClassNameToApplyTo" type="xs:string" minOccurs="1" maxOccurs="1" default="''"/>
+            <xs:element name="ObjectClassNameToAllowInherit" type="xs:string" minOccurs="1" maxOccurs="1" default="''"/>
+            <xs:element name="Identity" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="InheritanceType" type="InheritanceType" minOccurs="1" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:simpleType name="InheritanceType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(None|All|Descendents|SelfAndChildren|Children)$)|(^((None|All|Descendents|SelfAndChildren|Children)+(,\s{1}(None|All|Descendents|SelfAndChildren|Children)+)*$))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="ActiveDirectoryRights">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(CreateChild|DeleteChild|ListChildren|Self|ReadProperty|WriteProperty|DeleteTree|ListObject|ExtendedRight|Delete|ReadControl|GenericExecute|GenericWrite|GenericRead|WriteDacl|WriteOwner|GenericAll|Synchronize|AccessSystemSecurity)$)|(^((CreateChild|DeleteChild|ListChildren|Self|ReadProperty|WriteProperty|DeleteTree|ListObject|ExtendedRight|Delete|ReadControl|GenericExecute|GenericWrite|GenericRead|WriteDacl|WriteOwner|GenericAll|Synchronize|AccessSystemSecurity)+(,\s1(CreateChild|DeleteChild|ListChildren|Self|ReadProperty|WriteProperty|DeleteTree|ListObject|ExtendedRight|Delete|ReadControl|GenericExecute|GenericWrite|GenericRead|WriteDacl|WriteOwner|GenericAll|Synchronize|AccessSystemSecurity)+)*$))" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
+

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CommonAclTypes"
+    targetNamespace="AclTypes.xsd"
+    elementFormDefault="qualified"
+    xmlns="AclTypes.xsd"
+    xmlns:mstns="AclTypes.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+    <xs:complexType name="AccessRuleProtection">
+        <xs:all>
+            <xs:element name="IsProtected" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="PreserveInheritance" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="AuditRuleProtection">
+        <xs:all>
+            <xs:element name="IsProtected" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="PreserveInheritance" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:simpleType name="AccessControlType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:enumeration value="Allow"/>
+            <xs:enumeration value="Deny"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PropagationFlags">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(None|NoPropagateInherit|InheritOnly)$)|(^((None|NoPropagateInherit|InheritOnly)+(,\s{1}(None|NoPropagateInherit|InheritOnly)+)*$))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="AuditFlags">
+        <xs:restriction base="xs:normalizedString">
+            <xs:pattern value="(^(None|Success|Failure)$)|(^((None|Success|Failure)+(,\s{1}(None|Success|Failure)+)*$))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

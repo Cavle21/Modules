@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VMConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="VMConfig.xsd" 
+    xsi:SchemaLocation="VMConfig.xsd SonalystsModules\Schemas\VMCOnfigs.xsd"
+>
+    <FilePaths>
+        <VMConfigPath>$(VMConfigPath)</VMConfigPath>
+        <VHDLocation>$(VHDLocation)</VHDLocation>
+    </FilePaths>
+    <VirtualMachine>
+        <Name>$(VDCName)</Name>
+        <NewVHDPath>$(VHDLocation)\$(VDCName)</NewVHDPath>
+        <NewVHDSize>32212254720</NewVHDSize>
+        <MemoryStartupBytes>549755813</MemoryStartupBytes>
+        <Generation>2</Generation>
+        <Path>$(VMConfigPath)</Path>
+        <SwitchName>Dedicated - Virtual Switch</SwitchName>
+    </VirtualMachine>
+    <VirtualMachine>
+        <Name>$(HDRName)</Name>
+        <NewVHDPath>$(VHDLocation)\$(HDRName)</NewVHDPath>
+        <newVHDSize>32212254720</newVHDSize>
+        <MemoryStartupBytes>549755813</MemoryStartupBytes>
+        <Generation>2</Generation>
+        <Path>$(VMConfigPath)</Path>
+        <SwitchName>Dedicated - Virtual Switch</SwitchName>
+    </VirtualMachine>
+    <VirtualSwitch>
+        <Name>Dedicated - Virtual Switch</Name>
+        <netAdapterName>Primary</netAdapterName>
+        <AllowManagementOS>$False</AllowManagementOS>
+        <SwitchType>Internal</SwitchType>
+    </VirtualSwitch>
+    <VirtualSwitch>
+        <Name>Shared - Virtual Switch</Name>
+        <netAdapterName>Secondary</netAdapterName>
+        <AllowManagementOS>$True</AllowManagementOS>
+        <SwitchType>Internal</SwitchType>
+    </VirtualSwitch>
+</VMConfig>

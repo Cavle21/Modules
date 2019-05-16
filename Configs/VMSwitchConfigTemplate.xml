@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Infrustructure>
+    <VirtualSwitch>
+        <Name>$(NameOfVirtualSwitch</name>
+        <netAdapterName>$(NameOfPhysicalAdapter)</netAdapterName>
+        <AllowManagementOS>$(AllowOSManagement)</AllowManagementOS>
+        <SwitchType>$(SwitchType)</SwitchType>
+    </VirtualSwitch>
+</Infrustructure>
+
